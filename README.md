@@ -1,23 +1,23 @@
-﻿# SecureGov RAG Pipeline 🛡️
+﻿# SecureGov RAG Pipeline
 
 ## Project Overview
 A compliance-focused Retrieval-Augmented Generation (RAG) pipeline designed for **GovCloud** and **FinTech** environments. This system enables secure document querying while strictly enforcing **Data Sovereignty** and **PII Protection**.
 
 Unlike standard RAG implementations, this architecture creates a "air gap" between sensitive internal data and public LLMs, ensuring no confidential information is used for model training.
 
-## 🏗️ Architecture
+## Architecture
 * **Ingestion Engine:** Python + LangChain for PDF parsing and recursive chunking.
 * **Vector Store:** Pinecone (Isolated Index) for semantic search.
 * **Security Layer:** Automated PII (Personally Identifiable Information) redaction before embedding.
 * **Infrastructure:** Dockerized microservices deployable to AWS ECS (Fargate).
 
-## 🔧 Tech Stack
+## Tech Stack
 * **Language:** Python 3.10+
 * **AI Framework:** LangChain
 * **Database:** Pinecone (Vector DB)
 * **DevOps:** Docker, GitHub Actions
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 * Python 3.10+
