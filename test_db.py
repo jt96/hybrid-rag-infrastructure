@@ -7,10 +7,14 @@ that data was uploaded correctly and is retrievable.
 
 import os
 import sys
-from ingest import setup_env
+from dotenv import load_dotenv
 from langchain_pinecone import PineconeVectorStore
 from langchain_huggingface import HuggingFaceEmbeddings
 
+def setup_env():
+    print("Loading environment variables...")
+    load_dotenv()
+    print("Variables loaded.")
 
 def test_index():
     try:
