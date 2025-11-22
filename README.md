@@ -47,4 +47,5 @@ Unlike standard RAG implementations, this architecture creates a "air gap" betwe
    ```env
    PINECONE_API_KEY=your_key_here
    GOOGLE_API_KEY=your_key_here
+   PINECONE_INDEX_NAME=your_index_here
    ```
