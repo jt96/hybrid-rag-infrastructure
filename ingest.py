@@ -69,6 +69,7 @@ def ingest_docs():
 
     # Print the first chunk to prove it worked
     # print(f"Content of Chunk 1: \n{splits[0].page_content[:200]}...")
+    
     return splits
 
 def connect_to_cloud(splits):
