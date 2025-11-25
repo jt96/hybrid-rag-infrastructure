@@ -1,60 +1,87 @@
-﻿# SecureGov RAG Pipeline
+﻿# SecureGov RAG Pipeline 
 
 ## Project Overview
-A compliance-focused Retrieval-Augmented Generation (RAG) pipeline designed for **GovCloud** and **FinTech** environments. This system enables secure document querying while strictly enforcing **Data Sovereignty** and **PII Protection**.
+A compliance-focused Retrieval-Augmented Generation (RAG) pipeline designed for regulated environments. This system enables secure document querying while strictly enforcing **Data Sovereignty**.
 
-Unlike standard RAG implementations, this architecture creates a "air gap" between sensitive internal data and public LLMs, ensuring no confidential information is used for model training.
+Unlike standard RAG implementations, this architecture uses **Local Embeddings** (HuggingFace) to ensure document text is never sent to external embedding APIs, maintaining a strict boundary for sensitive data.
 
 ## Architecture
 * **Ingestion Engine:** Python + LangChain for PDF parsing and recursive chunking.
-* **Vector Store:** Pinecone (Isolated Index) for semantic search.
-* **Security Layer:** Automated PII (Personally Identifiable Information) redaction before embedding.
-* **Infrastructure:** Dockerized microservices deployable to AWS ECS (Fargate).
+* **Vector Store:** Pinecone (Serverless Index) for semantic search.
+* **Cognitive Layer:** Hybrid approach using Local Embeddings (CPU) + Google Gemini (LLM) for answer synthesis.
+* **Infrastructure:** Fully containerized via Docker with volume mapping for dynamic data injection.
 
 ## Tech Stack
-* **Language:** Python 3.10+
-* **AI Framework:** LangChain
+* **Language:** Python 3.11
+* **Containerization:** Docker
+* **Framework:** LangChain v0.3
 * **Database:** Pinecone (Vector DB)
-* **DevOps:** Docker, GitHub Actions
+* **AI Models:** `all-MiniLM-L6-v2` (Local) + `gemini-2.0-flash` (Cloud)
 
-## Getting Started
+## Quick Start (Docker)
 
-### Prerequisites
-* Python 3.10+
-* Docker Desktop
-* API Keys (Pinecone, Google Gemini/OpenAI)
+### 1. Configuration
+Create a `.env` file in the root directory with your API keys:
+```env
+PINECONE_API_KEY=your_key_here
+GOOGLE_API_KEY=your_key_here
+PINECONE_INDEX_NAME=secure-rag
+# Optional: Custom folder name (Defaults to "data")
+# DATA_FOLDER=my_docs
+```
 
-### Installation
-1. **Clone the repository**
-   ```powershell
-   git clone [https://github.com/jt96/secure-rag-pipeline.git](https://github.com/jt96/secure-rag-pipeline.git)
-   cd secure-rag-pipeline
-   ```
+### 2. Prepare Data
+Create a folder named `data` in your project root and add your PDF files.
 
-2. **Set up the environment (Windows)**
-   ```powershell
+### 3. Build the Image
+```bash
+docker build -t rag-app .
+```
+
+### 4. Run the Application
+
+**Option A: Chat Only (Default)**
+If you have already ingested data, just run the chat interface:
+
+*Windows (PowerShell):*
+```powershell
+docker run -it --env-file .env -v ${PWD}/data:/app/data rag-app
+```
+
+*Mac/Linux:*
+```bash
+docker run -it --env-file .env -v $(pwd)/data:/app/data rag-app
+```
+
+**Option B: Ingest & Chat (First Run)**
+To process new PDFs before chatting, set the `RUN_INGEST` variable to true:
+
+*Windows (PowerShell):*
+```powershell
+docker run -it --env-file .env -e RUN_INGEST=true -v ${PWD}/data:/app/data rag-app
+```
+
+---
+
+## Local Development (No Docker)
+
+1. **Install Dependencies:**
+   ```bash
    python -m venv venv
+   # Windows
    .\venv\Scripts\activate
-   ```
-
-3. **Install Dependencies**
-   ```powershell
+   # Mac/Linux
+   source venv/bin/activate
+   
    pip install -r requirements.txt
    ```
 
-4. **Configuration**
-   Create a `.env` file in the root directory and add your API keys:
-   ```env
-   PINECONE_API_KEY=your_key_here
-   GOOGLE_API_KEY=your_key_here
-   PINECONE_INDEX_NAME=your_index_here
+2. **Run Ingestion:**
+   ```bash
+   python ingest.py
    ```
 
-## Docker Support
-Run the application in an isolated container:
-
-1. Build the image:
-   `docker build -t rag-app .`
-
-2. Run the chat (injects API keys automatically):
-   `docker run -it --env-file .env rag-app`
+3. **Run Chat:**
+   ```bash
+   python rag.py
+   ```
