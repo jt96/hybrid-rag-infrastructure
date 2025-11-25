@@ -49,3 +49,12 @@ Unlike standard RAG implementations, this architecture creates a "air gap" betwe
    GOOGLE_API_KEY=your_key_here
    PINECONE_INDEX_NAME=your_index_here
    ```
+
+## Docker Support
+Run the application in an isolated container:
+
+1. Build the image:
+   `docker build -t rag-app .`
+
+2. Run the chat (injects API keys automatically):
+   `docker run -it --env-file .env rag-app`
