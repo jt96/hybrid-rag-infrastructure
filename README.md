@@ -46,18 +46,12 @@ docker compose run rag-app
 **Option B: Ingest & Chat (First Run)**
 To process new PDFs before starting the chat, pass the ingestion environment variable:
 ```bash
-# Windows (PowerShell)
-docker compose run -e RUN_INGEST=true rag-app
-
-# Mac/Linux
 docker compose run -e RUN_INGEST=true rag-app
 ```
 
 ---
 
-## Advanced Configuration
-
-### Custom Data Folder
+## Custom Data Folder
 If you change the `DATA_FOLDER` variable in your `.env` file (e.g., to `my_docs`), Docker Compose will automatically map that local folder to the container thanks to dynamic variable substitution in `docker-compose.yml`.
 
 ---
