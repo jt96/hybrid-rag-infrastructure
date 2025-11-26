@@ -9,6 +9,9 @@ services:
     
     volumes:
       - ./${DATA_FOLDER:-data}:/app/${DATA_FOLDER:-data}
+
+    ports:
+      - "8501:8501"
     
     stdin_open: true 
     tty: true

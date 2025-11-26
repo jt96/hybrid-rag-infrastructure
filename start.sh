@@ -12,5 +12,8 @@ if [ "$RUN_INGEST" = "true" ]; then
 fi
 
 # 2. Always start the Chatbot afterwards
-echo "Starting RAG Chat..."
-python rag.py
+echo "Starting Streamlit UI..."
+echo "--------------------------------------------------"
+echo "APP RUNNING! Click here -> http://localhost:8501"
+echo "--------------------------------------------------"
+streamlit run app.py --server.port=8501 --server.address=0.0.0.0

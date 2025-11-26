@@ -9,6 +9,8 @@ RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/wh
 
 COPY . .
 
+EXPOSE 8501
+
 RUN chmod +x start.sh
 
 CMD ["./start.sh"]
