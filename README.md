@@ -3,7 +3,7 @@
 ## Project Overview
 A compliance-focused Retrieval-Augmented Generation (RAG) pipeline designed for regulated environments. This system enables secure document querying while strictly enforcing **Data Sovereignty**.
 
-Unlike standard RAG implementations, this architecture uses **Local Embeddings** (HuggingFace) to ensure document text is never sent to external embedding APIs, maintaining a strict boundary for sensitive data.
+Unlike standard RAG implementations, this architecture uses **Local Embeddings** (HuggingFace) to ensure document text is never sent to external embedding APIs, maintaining a strict boundary for sensitive data. The application is served via a modern **Streamlit Web Interface**.
 
 ## Architecture
 * **Ingestion Engine:** Python + LangChain for PDF parsing and recursive chunking.
@@ -13,6 +13,7 @@ Unlike standard RAG implementations, this architecture uses **Local Embeddings**
 
 ## Tech Stack
 * **Language:** Python 3.11
+* **Interface:** Streamlit
 * **Containerization:** Docker & Docker Compose
 * **Framework:** LangChain v0.3
 * **Database:** Pinecone (Vector DB)
@@ -31,27 +32,37 @@ PINECONE_INDEX_NAME=secure-rag
 ```
 
 ### 2. Prepare Data
-Create a folder named `data` in your project root directory and add your PDF files.
+Create a folder named `data` in the project root directory and add your PDF files.
 
 ### 3. Run the Application
 
-We use `docker compose run` to launch the interactive chat interface.
+Use `docker compose run` with the `--service-ports` flag to ensure the web interface is accessible.
 
-**Option A: Chat Only (Default)**
-If you have already ingested data, run this command to start chatting immediately:
+**Option A: Chat Only (Standard)**
+Use this command to launch the SecureGov RAG Agent interface.
 ```bash
-docker compose run rag-app
+docker compose run --service-ports rag-app
 ```
+*Access the UI at:* **http://localhost:8501**
 
 **Option B: Ingest & Chat (First Run)**
-To process new PDFs before starting the chat, pass the ingestion environment variable:
+To process new PDFs before starting the web server:
 ```bash
-docker compose run -e RUN_INGEST=true rag-app
+docker compose run --service-ports -e RUN_INGEST=true rag-app
+```
+*The system will scan for new files, vectorize them, upload to Pinecone, and move the source files to `data/processed/` to prevent duplication.*
+
+**Option C: Ingest Only (Utility Mode)**
+If you just want to process data and exit (without starting the web server):
+```bash
+docker compose run rag-app python ingest.py
 ```
 
 ---
 
-## Custom Data Folder
+## Advanced Configuration
+
+### Custom Data Folder
 If you change the `DATA_FOLDER` variable in your `.env` file (e.g., to `my_docs`), Docker Compose will automatically map that local folder to the container thanks to dynamic variable substitution in `docker-compose.yml`.
 
 ---
@@ -74,7 +85,7 @@ If you change the `DATA_FOLDER` variable in your `.env` file (e.g., to `my_docs`
    python ingest.py
    ```
 
-3. **Run Chat:**
+3. **Run UI:**
    ```bash
-   python rag.py
+   streamlit run app.py
    ```
