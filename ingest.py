@@ -69,14 +69,16 @@ def ingest_docs(data_folder):
     # Load all PDFs in folder
     docs = []
     print(f"Loading {len(pdf_files)} PDFs from '{data_folder}'...")
+    successful_files = []
     for pdf_file in pdf_files:
         file_path = os.path.join(data_folder, pdf_file)
         try:
             loader = PyPDFLoader(file_path)
             docs.extend(loader.load())
+            successful_files.append(pdf_file)
         except Exception as e:
-            print(f"Error loading {pdf_file}: {e}")
-            sys.exit(1)
+            print(f"Error loading {pdf_file}: {e} (SKIPPING)")
+            continue
 
     # 1000 chars is about 250 words.
     # 200 overlap ensures we don't cut a sentence in half.
@@ -95,7 +97,7 @@ def ingest_docs(data_folder):
     print(f"Created {len(splits)} vector chunks.")
     
     print(f"Moving processed files to {processed_folder}")
-    for file_name in pdf_files:
+    for file_name in successful_files:
         src_path = os.path.join(data_folder, file_name)
         dst_path = os.path.join(processed_folder, file_name)
         try:
