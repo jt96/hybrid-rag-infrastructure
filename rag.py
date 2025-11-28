@@ -62,7 +62,7 @@ def get_rag_chain():
     formulate a standalone question which can be understood without the chat history. 
     Do NOT answer the question, just reformulate it if needed and otherwise return it as is."""
     
-    # Build the prompt template that includes the chat history placeholder
+    # Build the prompt template that includes the chat history placeholder.
     contextualize_q_prompt = ChatPromptTemplate.from_messages(
         [
             ("system", contextualize_q_system_prompt),
@@ -71,7 +71,7 @@ def get_rag_chain():
         ]
     )
 
-    # It doesn't answer the question; it just finds the right documents.
+    # It doesn't answer the question, just finds the right documents.
     history_aware_retriever = create_history_aware_retriever(llm, retriever, contextualize_q_prompt)
     
     # Instructs the LLM to act as a Q&A assistant using specific context.

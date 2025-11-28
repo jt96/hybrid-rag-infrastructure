@@ -36,7 +36,12 @@ def setup_chat():
             message_placeholder.markdown("Thinking...")
             
             try:
-                response = st.session_state.chain.invoke({"input": prompt})
+                chat_history = []
+                for msg in st.session_state.messages[:-1]:
+                    role = "human" if msg["role"] == "user" else "ai"
+                    chat_history.append((role, msg["content"]))
+                response = st.session_state.chain.invoke({"input": prompt,
+                                                          "chat_history": chat_history})
                 answer = response["answer"]
                 
                 message_placeholder.markdown(answer)
