@@ -3,20 +3,21 @@ RAG Chatbot Interface
 
 This script runs an interactive command-line interface (CLI) for chatting 
 with the ingested document knowledge base. It uses a Retrieval-Augmented 
-Generation (RAG) pipeline to answer user questions based strictly on 
-the provided context.
+Generation (RAG) pipeline to answer user questions.
 
-Architecture:
-- Retriever: Local HuggingFace embeddings search the Pinecone vector store.
-- Generator: Google Gemini (LLM) synthesizes the final answer.
+Features:
+- **Context-Awareness:** Uses chat history to rephrase follow-up questions 
+  (e.g., "What is it?" -> "What is the newsletter?").
+- **Citations:** Returns source filenames and page numbers for verification.
+- **Hybrid Architecture:** Local HuggingFace embeddings (CPU) + Google Gemini (LLM).
 
 Usage:
     python rag.py
 
 Environment Variables:
-    GOOGLE_API_KEY: Required. API key for Google Gemini (Generative AI).
-    PINECONE_API_KEY: Required. API key for the Pinecone vector database.
-    PINECONE_INDEX_NAME: Required. Name of the Pinecone index to query.
+    GOOGLE_API_KEY: Required. API key for Google Gemini.
+    PINECONE_API_KEY: Required. API key for Pinecone.
+    PINECONE_INDEX_NAME: Required. Target index name.
 """
 
 import os
