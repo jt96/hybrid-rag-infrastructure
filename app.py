@@ -1,3 +1,25 @@
+"""
+Streamlit Web Interface for SecureGov RAG
+
+This script launches a web-based chat interface that allows users to interact 
+with the RAG pipeline in a user-friendly environment. It manages the user session, 
+visualizes chat history, and renders source citations for transparency.
+
+Features:
+- **Persistent Session:** Caches the RAG chain and chat history across re-runs.
+- **Interactive Chat:** Renders user and AI messages using Streamlit's chat components.
+- **Advanced Citations:** Displays deduplicated source documents in an expandable section.
+  - Handles "Unknown" source files gracefully.
+  - Deduplicates by Page Number (if known) or Content Hash (if metadata is missing).
+  - Cleans up snippet text for readability.
+- **Graceful Exit:** Handles "exit/quit" commands by stopping script execution safely.
+
+Usage:
+    streamlit run app.py
+    # OR via Docker
+    docker compose run --service-ports rag-app
+"""
+
 import streamlit as st
 from rag import get_rag_chain, setup_env
 
