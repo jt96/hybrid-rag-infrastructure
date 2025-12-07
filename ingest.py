@@ -29,6 +29,12 @@ from langchain_pinecone import PineconeVectorStore
 from langchain_huggingface import HuggingFaceEmbeddings
 
 def setup_env():
+    """
+    Validates environment variables and directory structure.
+    
+    Returns:
+        str: The path to the data directory.
+    """
     print("Loading environment variables...")
     load_dotenv()
     print("Variables loaded.")
@@ -48,12 +54,21 @@ def setup_env():
     return data_folder
 
 def ingest_docs(data_folder):
+    """
+    Loads PDFs, splits them into chunks, and archives source files.
+
+    Args:
+        data_folder (str): Path to the directory containing PDFs.
+
+    Returns:
+        List[Document]: A list of chunked langchain Document objects.
+    """
     processed_folder = os.path.join(data_folder, "processed")
     
-    # Create processed folder if it doesn't exist
     if not os.path.exists(processed_folder):
         os.makedirs(processed_folder)
         
+    # Filter for PDFs only
     files = os.listdir(data_folder)
     pdf_files = [f for f in files if f.lower().endswith(".pdf")]
     
@@ -104,19 +119,26 @@ def ingest_docs(data_folder):
     
     return splits
 
-def connect_to_cloud(splits):
+def vectorize_and_upload(splits):
+    """
+    Generates embeddings and uploads chunks to Pinecone in batches.
+
+    Args:
+        splits (List[Document]): List of document chunks to upload.
+    """
     try:
         PINECONE_INDEX_NAME = os.environ["PINECONE_INDEX_NAME"]
     except Exception as e:
         print(f"Environment variable missing: {e}")
         sys.exit(1)
 
-    # Initialize the "Converter" (Text -> Numbers)
+    # Initialize Local Embeddings (HuggingFace/all-MiniLM-L6-v2)
+    # Note: If changing this model, ensure 'chunk_size' in ingest_docs is updated to match new token limits.
     print("Initializing Local AI Embedding Model...")
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
-    # Batch Processing Logic
-    batch_size = 50  # Small batch to stay under free tier limits
+    # batch_size=50: Prevents hitting Pinecone request size limits (2MB)
+    batch_size = 50
     total_chunks = len(splits)
 
     for i in range(0, total_chunks, batch_size):
@@ -139,7 +161,7 @@ def main():
     try:
         data_path = setup_env()
         text_chunks = ingest_docs(data_path)
-        connect_to_cloud(text_chunks)
+        vectorize_and_upload(text_chunks)
     except Exception as e:
         print(f"Failed: {e}")
         sys.exit(1)
