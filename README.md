@@ -1,4 +1,4 @@
-﻿# SecureGov RAG Pipeline
+﻿# Hybrid RAG Infrastructure
 
 ## Project Overview
 A **Cost-Optimized** Retrieval-Augmented Generation (RAG) pipeline designed for efficient document querying. Unlike standard RAG implementations that rely entirely on paid APIs, this architecture uses **Local Embeddings** (HuggingFace) to eliminate external embedding API costs and latency.
