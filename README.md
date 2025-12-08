@@ -34,7 +34,7 @@ PINECONE_INDEX_NAME=secure-rag
 LLM_MODEL=gemini-2.5-flash
 
 # Optional: Custom folder name for source PDFs (Defaults to "data")
-# DATA_FOLDER=data
+DATA_FOLDER=data
 ```
 
 ### 2. Prepare Data
