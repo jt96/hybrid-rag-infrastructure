@@ -47,21 +47,21 @@ Use `docker compose run` with the `--service-ports` flag to ensure the web inter
 **Option A: Chat Only (Standard)**
 Use this command to launch the Hybrid RAG Agent interface.
 ```bash
-docker compose run --service-ports rag-app
+docker compose run --service-ports hybrid-rag-app
 ```
 *Access the UI at:* **http://localhost:8501**
 
 **Option B: Ingest & Chat (First Run)**
 To process new PDFs before starting the web server:
 ```bash
-docker compose run --service-ports -e RUN_INGEST=true rag-app
+docker compose run --service-ports -e RUN_INGEST=true hybrid-rag-app
 ```
 *The system will scan for new files, vectorize them, upload to Pinecone, and move the source files to `data/processed/` to prevent duplication.*
 
 **Option C: Ingest Only (Utility Mode)**
 If you just want to process data and exit (without starting the web server):
 ```bash
-docker compose run rag-app python ingest.py
+docker compose run hybrid-rag-app python ingest.py
 ```
 
 **Option D: Windows Chat Only "One-Click"**
