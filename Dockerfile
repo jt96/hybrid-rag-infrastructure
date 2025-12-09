@@ -9,7 +9,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 COPY requirements.txt .
 
-# Explicitly pull CPU-only torch to avoid massive NVIDIA driver bloat (~10GB saved)
+# Explicitly pull CPU-only torch. 
+# Optimized from original 12GB GPU image -> 2.6GB (~80% reduction).
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir torch==2.9.1 --index-url https://download.pytorch.org/whl/cpu && \
     pip install --no-cache-dir -r requirements.txt
