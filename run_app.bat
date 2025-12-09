@@ -1,5 +1,5 @@
 @echo off
-echo Starting SecureGov RAG...
+echo Starting Hybrid RAG...
 
 :: 1. Start Docker in detached mode (background)
 docker compose up -d

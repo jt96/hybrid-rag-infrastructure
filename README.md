@@ -26,7 +26,7 @@ Create a `.env` file in the root directory with your API keys:
 ```env
 PINECONE_API_KEY=your_key_here
 GOOGLE_API_KEY=your_key_here
-PINECONE_INDEX_NAME=secure-rag
+PINECONE_INDEX_NAME=hybrid-rag
 
 # Optional: Select the AI Model version
 # Defaults to "gemini-2.5-flash" if not set.
@@ -45,7 +45,7 @@ Create a folder named `data` in the project root directory and add your PDF file
 Use `docker compose run` with the `--service-ports` flag to ensure the web interface is accessible.
 
 **Option A: Chat Only (Standard)**
-Use this command to launch the SecureGov RAG Agent interface.
+Use this command to launch the Hybrid RAG Agent interface.
 ```bash
 docker compose run --service-ports rag-app
 ```

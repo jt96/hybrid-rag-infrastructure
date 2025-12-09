@@ -1,5 +1,5 @@
 """
-Streamlit Web Interface for SecureGov RAG
+Streamlit Web Interface for Hybrid RAG Infrastructure
 
 This script launches a web-based chat interface that allows users to interact 
 with the RAG pipeline in a user-friendly environment. It manages the user session, 
@@ -28,8 +28,8 @@ def setup_chat():
     Main application logic. 
     Initializes the UI, manages session state, and handles the chat event loop.
     """
-    st.set_page_config(page_title="SecureGov RAG", page_icon="🛡️")
-    st.title("SecureGov RAG Agent")
+    st.set_page_config(page_title="Hybrid RAG Agent", page_icon="🤖")
+    st.title("Hybrid RAG Agent")
 
     # Streamlit re-runs this script on every interaction. We check session_state
     # to ensure we only load the heavy RAG models once.

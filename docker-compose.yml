@@ -1,8 +1,8 @@
 services:
-  rag-app:
+  hybrid-rag-app:
     build: .
     
-    container_name: secure-rag
+    container_name: hybrid-rag
     
     env_file:
       - .env
