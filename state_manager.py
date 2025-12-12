@@ -29,7 +29,6 @@ import hashlib
 import json
 import logging
 import os
-from typing import Dict, Optional
 
 logging.basicConfig(
     level=logging.INFO,
@@ -39,7 +38,7 @@ logger = logging.getLogger(__name__)
 
 class StateManager:
     state_file: str
-    state: Dict[str, str]
+    state: dict[str, str]
     
     def __init__(self, state_file: str="state.json"):
         # Convert relative path to absolute path based on where this script lives.
@@ -48,7 +47,7 @@ class StateManager:
         
         self.state = self._load_state()
         
-    def _load_state(self) -> Dict[str, str]:
+    def _load_state(self) -> dict[str, str]:
         if not os.path.exists(self.state_file):
             logger.info(f"No state file found at {self.state_file}. Starting new state file.")
             return {}
@@ -79,7 +78,7 @@ class StateManager:
         except IOError as e:
             logger.error(f"Failed to save state to state file: {e}")
 
-def compute_file_hash(input_file_path: str, algo: str="sha256", chunk_size: int=4096) -> Optional[str]:
+def compute_file_hash(input_file_path: str, algo: str="sha256", chunk_size: int=4096) -> str | None:
     hasher = hashlib.new(algo)
     try:
         with open(input_file_path, "rb") as f:
