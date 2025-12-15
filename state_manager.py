@@ -37,6 +37,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class StateManager:
+    """
+    Manages the persistence layer for tracking processed files.
+    
+    Attributes:
+        state_file (str): Absolute path to the JSON state file.
+        state (dict): In-memory cache of processed file hashes.
+    """
     state_file: str
     state: dict[str, str]
     
@@ -48,6 +55,7 @@ class StateManager:
         self.state = self._load_state()
         
     def _load_state(self) -> dict[str, str]:
+        """Loads state from disk, handling missing or corrupted files gracefully."""
         if not os.path.exists(self.state_file):
             logger.info(f"No state file found at {self.state_file}. Starting new state file.")
             return {}
@@ -66,9 +74,11 @@ class StateManager:
             return {}
     
     def is_processed(self, file_hash: str) -> bool:
+        """Checks if a file hash exists in the state."""
         return file_hash in self.state
     
     def add_processed(self, file_hash: str, filename: str) -> None:
+        """Updates the state and persists it to disk immediately."""
         self.state[file_hash] = filename
         try:
             # Persist immediately to handle crashes/interrupts safely.
@@ -79,6 +89,7 @@ class StateManager:
             logger.error(f"Failed to save state to state file: {e}")
 
 def compute_file_hash(input_file_path: str, algo: str="sha256", chunk_size: int=4096) -> str | None:
+    """Computes the SHA-256 hash of a file efficiently by reading in chunks."""
     hasher = hashlib.new(algo)
     try:
         with open(input_file_path, "rb") as f:
@@ -96,6 +107,7 @@ def compute_file_hash(input_file_path: str, algo: str="sha256", chunk_size: int=
 
 def main():
     test_file_path = "./data/ghost.txt"
+    # This will likely fail if ghost.txt doesn't exist, which is expected behavior.
     hashed_file = compute_file_hash(test_file_path,"sha256",4096)
     
     if not hashed_file:
