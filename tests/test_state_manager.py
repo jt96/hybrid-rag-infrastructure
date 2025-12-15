@@ -55,3 +55,24 @@ def test_persistence(manager, temp_state_file):
     
     assert fake_hash in new_manager.state
     assert new_manager.state[fake_hash] == fake_path
+    
+def test_corruption_detection(temp_state_file):
+    """
+    Verifies that the manager detects corruption (invalid JSON) 
+    and resets to a fresh empty state.
+    """
+    with open(temp_state_file, "w") as f:
+        f.write("NOT JSON DATA")
+    
+    manager = StateManager(state_file=temp_state_file)
+    
+    assert manager.state == {}
+    
+def test_ghost_file(tmp_path):
+    """
+    Verifies that compute_file_hash handles FileNotFoundError 
+    and returns None instead of crashing the program.
+    """
+    fake_file = tmp_path / "ghost.txt"
+    
+    assert compute_file_hash(str(fake_file)) is None
