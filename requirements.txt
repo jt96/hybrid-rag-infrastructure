@@ -11,3 +11,4 @@ tiktoken==0.7.0
 pinecone-client==6.0.0
 sentence-transformers==3.0.1
 streamlit==1.51.0
+pytest==9.0.2
