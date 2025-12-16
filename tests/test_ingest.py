@@ -7,7 +7,7 @@ sys.path.insert(0, parent_dir)
 
 import pytest # noqa: E402
 from unittest.mock import patch, MagicMock # noqa: E402
-from ingest import setup_env, ingest_docs # noqa: E402
+from ingest import setup_env, ingest_docs, vectorize_and_upload # noqa: E402
 
 @patch("ingest.os.getenv")
 @patch("ingest.sys.exit")
@@ -74,7 +74,6 @@ def test_ingest_docs_successful_processing(
     assert len(result) == 2 
     mock_move.assert_called_once() 
     mock_manager_instance.add_processed.assert_called_once_with("abc123hash", "test_doc.pdf")
-    
 
 @patch("ingest.sys.exit")
 @patch("ingest.os.listdir")
@@ -94,3 +93,29 @@ def test_ingest_docs_no_pdfs_found(mock_exists, mock_listdir, mock_exit):
         ingest_docs("data")
     
     mock_exit.assert_called_once_with(0)
+
+@patch("ingest.HuggingFaceEmbeddings")
+@patch("ingest.PineconeVectorStore")
+@patch("ingest.os.environ")
+def test_vectorize_and_upload_success(mock_environ, mock_vectorstore_class, mock_embeddings_class):
+    """
+    Verifies that the system correctly initializes the HuggingFace embedding model 
+    and uploads the document chunks to the Pinecone vector database.
+    """    
+    # Create fake document objects to pass through
+    mock_docs = [MagicMock(), MagicMock()]
+    
+    vectorize_and_upload(mock_docs)
+    
+    # Verify Embedding Model Initialization
+    mock_embeddings_class.assert_called_once()
+    
+    # Verify Upload to Pinecone
+    mock_vectorstore_class.from_documents.assert_called_once()
+    
+    # Verify correctness of the data passed
+    _, kwargs = mock_vectorstore_class.from_documents.call_args
+    assert kwargs["documents"] == mock_docs
+
+    
+  
