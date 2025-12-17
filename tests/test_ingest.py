@@ -155,7 +155,7 @@ def test_corrupt_pdf(mock_exists, mock_listdir, mock_splitter_class, mock_loader
     mock_exists.return_value = True 
     mock_listdir.return_value = ["bad_doc.pdf", "good_doc.pdf"] 
     
-    mock_hasher.return_value.side_ = "abc123hash" 
+    mock_hasher.return_value = "abc123hash" 
     mock_move.return_value = True
 
     # Setup valid document return
