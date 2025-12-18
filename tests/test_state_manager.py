@@ -1,3 +1,20 @@
+"""
+Unit Tests for State Manager
+
+This test suite verifies the persistence and integrity logic of the 
+incremental ingestion system. It ensures that the file tracking database 
+(JSON) correctly records processed files and recovers from errors.
+
+Test Coverage:
+- **Hashing Logic:** Verifies SHA-256 hash generation for file content.
+- **Persistence:** checks that the JSON state file is created, read, 
+  and updated correctly.
+- **Resilience:** Ensures the system creates a new state file if the 
+  existing one is missing or corrupted (invalid JSON).
+- **Idempotency:** Confirms that previously processed hashes are 
+  correctly identified to prevent re-work.
+"""
+
 import sys
 import os
 

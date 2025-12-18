@@ -1,3 +1,21 @@
+"""
+Unit Tests for Ingestion Pipeline
+
+This test suite mocks the end-to-end document processing workflow to 
+ensure files are loaded, split, and vectorized without making actual 
+API calls or file system changes.
+
+Test Coverage:
+- **Environment Validation:** Ensures the script exits safely if API keys 
+  or index names are missing.
+- **Flow Control:** Verifies the correct order of operations (Load -> 
+  Split -> Vectorize -> Move File).
+- **Mocking:** usage of 'MagicMock' to simulate Pinecone, LangChain, 
+  and file system operations.
+- **File Handling:** Checks that files are moved to the 'processed' 
+  directory only after successful ingestion.
+"""
+
 import os
 import sys
 

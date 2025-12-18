@@ -1,3 +1,21 @@
+"""
+Unit Tests for RAG Interface
+
+This test suite verifies the initialization and logic of the conversational 
+retrieval chain. It ensures that the system correctly wires together the 
+LLM, Vector Store, and Prompt Templates.
+
+Test Coverage:
+- **Chain Initialization:** Verifies that the Retriever, LLM, and 
+  LangChain components are instantiated with correct parameters.
+- **Environment Handling:** Checks for graceful exit on missing configuration 
+  variables (e.g., PINECONE_INDEX_NAME).
+- **Utility Logic:** Tests helper functions such as citation printing 
+  and deduplication logic.
+- **Mocking:** Uses detailed patching to simulate the 'ChatGoogleGenerativeAI' 
+  and 'PineconeVectorStore' dependencies.
+"""
+
 import os
 import sys
 
