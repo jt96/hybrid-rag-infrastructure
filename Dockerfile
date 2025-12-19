@@ -26,6 +26,9 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 COPY . .
 
+# Add src to PYTHONPATH
+ENV PYTHONPATH="${PYTHONPATH}:/app/src"
+
 EXPOSE 8501
 
 RUN chmod +x start.sh
