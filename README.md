@@ -20,6 +20,20 @@ The system integrates a **serverless vector database (Pinecone)** for scalable r
 * **Database:** Pinecone (Vector DB)
 * **AI Models:** `all-MiniLM-L6-v2` (Local) + `gemini-2.5-flash` (Cloud)
 
+## Project Structure
+```text
+hybrid-rag/
+├── src/                # Application Source Code
+│   ├── app.py          # Streamlit Interface
+│   ├── ingest.py       # Data Processing Engine
+│   ├── rag.py          # RAG Logic & Chain
+│   └── state_manager.py # State Persistence
+├── data/               # PDF Storage (Mapped Volume)
+├── tests/              # Unit Tests
+├── Dockerfile          # Container Definition
+└── docker-compose.yml  # Orchestration
+```
+
 ## Quick Start
 
 ### 1. Configuration
@@ -62,7 +76,7 @@ docker compose run --service-ports -e RUN_INGEST=true hybrid-rag-app
 **Option C: Ingest Only (Utility Mode)**
 If you just want to process data and exit (without starting the web server):
 ```bash
-docker compose run hybrid-rag-app python ingest.py
+docker compose run hybrid-rag-app python src/ingest.py
 ```
 
 **Option D: Windows Chat Only "One-Click"**
@@ -112,10 +126,11 @@ If you change the `DATA_FOLDER` variable in your `.env` file (e.g., to `my_docs`
 
 3. **Run Ingestion:**
    ```bash
-   python ingest.py
+   # Run from root, pointing to the src file
+   python src/ingest.py
    ```
 
 4. **Run UI:**
    ```bash
-   streamlit run app.py
+   streamlit run src/app.py
    ```
