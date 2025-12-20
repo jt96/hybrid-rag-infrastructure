@@ -97,7 +97,7 @@ def test_get_rag_chain_initialization(mock_embeddings_class, mock_vectorstore_cl
     
     # Verify the correct index name was passed to the VectorStore
     _, kwargs = mock_vectorstore_class.call_args
-    assert kwargs["index_name"] == "Index Name"
+    assert kwargs["index_name"] == "test-index"
 
     # Verify all components were initialized
     mock_llm_class.assert_called_once()
