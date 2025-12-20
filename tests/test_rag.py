@@ -25,7 +25,7 @@ sys.path.insert(0, parent_dir)
 
 import pytest # noqa: E402
 from unittest.mock import patch, MagicMock # noqa: E402
-from rag import setup_env, get_rag_chain, print_citations # noqa: E402
+from src.rag import setup_env, get_rag_chain, print_citations # noqa: E402
 
 @patch("rag.os.getenv")
 @patch("rag.sys.exit")
