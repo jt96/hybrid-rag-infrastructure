@@ -67,12 +67,12 @@ def test_print_citations(capsys):
     assert captured.out.count("test.pdf") == 1
     assert captured.out.count("Page 1") == 1
     
-@patch("rag.create_retrieval_chain")
-@patch("rag.create_stuff_documents_chain")
-@patch("rag.create_history_aware_retriever")
-@patch("rag.ChatGoogleGenerativeAI")
-@patch("rag.PineconeVectorStore")
-@patch("rag.HuggingFaceEmbeddings")
+@patch("src.rag.create_retrieval_chain")
+@patch("src.rag.create_stuff_documents_chain")
+@patch("src.rag.create_history_aware_retriever")
+@patch("src.rag.ChatGoogleGenerativeAI")
+@patch("src.rag.PineconeVectorStore")
+@patch("src.rag.HuggingFaceEmbeddings")
 @patch.dict(os.environ, {"PINECONE_INDEX_NAME": "test-index", 
                          "PINECONE_API_KEY": "mock", 
                          "GOOGLE_API_KEY": "mock"})
