@@ -73,17 +73,16 @@ def test_print_citations(capsys):
 @patch("rag.ChatGoogleGenerativeAI")
 @patch("rag.PineconeVectorStore")
 @patch("rag.HuggingFaceEmbeddings")
-@patch("rag.os.environ")
-def test_get_rag_chain_initialization(mock_environ, mock_embeddings_class, mock_vectorstore_class, 
+@patch.dict(os.environ, {"PINECONE_INDEX_NAME": "test-index", 
+                         "PINECONE_API_KEY": "mock", 
+                         "GOOGLE_API_KEY": "mock"})
+def test_get_rag_chain_initialization(mock_embeddings_class, mock_vectorstore_class, 
                                       mock_llm_class, mock_history_retriever, mock_stuff_chain, 
                                       mock_retrieval_chain):
     """
     Verifies that the RAG pipeline is initialized with the correct components,
     models, and configuration parameters.
     """
-    # Configure dictionary access to return a valid index name
-    mock_environ.__getitem__.return_value = "Index Name"
-    
     # Mock the return values for the chain components
     mock_vectorstore_instance = mock_vectorstore_class.return_value
     mock_vectorstore_instance.as_retriever.return_value = MagicMock()
