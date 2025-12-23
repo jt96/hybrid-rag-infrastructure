@@ -28,3 +28,8 @@ Thumbs.db
 # RAG State Management
 state.json
 state.json.bak
+
+# Terraform
+infrastructure/.terraform/
+infrastructure/*.tfstate
+infrastructure/*.tfstate.backup
